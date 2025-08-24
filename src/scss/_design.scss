@@ -1,0 +1,145 @@
+@import "vars";
+
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    background: $main-bg;
+    color: $text;
+    line-height: 1.2;
+    min-height: 100vh;
+}
+
+ul {
+    list-style: none;
+}
+
+a {
+    color: inherit;
+}
+
+.container {
+    min-height: 100vh;
+    padding: 20px 15px;
+    margin: 0 auto;
+    max-width: 1350px;
+
+    &-main {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+}
+
+.primary-btn {
+    cursor: pointer;
+    font-family: "Poppins", sans-serif;
+    color: #fff;
+    padding: 12px 24px;
+    font-weight: 500;
+    background: $primary;
+    border: 1px solid $primary-border;
+    border-radius: 10px;
+    font-size: 16px;
+    box-shadow: 0 6px 12px rgba(37, 99, 235, 0.1);
+    transition: all 0.2s ease-in-out;
+    outline: none;
+
+    &:hover {
+        box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3);
+        background: #1e40af;
+    }
+
+    &:active {
+        background-color: #1d4ed8;
+        transform: scale(0.96);
+    }
+
+    &:focus {
+        box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.6);
+    }
+}
+
+.header {
+    text-align: center;
+
+    &__title {
+        font-weight: 700;
+        font-size: 64px;
+        margin-bottom: 20px;
+    }
+
+    &__subtitle {
+        color: $text-secondary;
+    }
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+
+    &__title {
+        font-size: 24px;
+        text-align: center;
+        margin-bottom: 30px;
+        font-weight: 400;
+    }
+
+    &__cards {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 30px;
+
+        &-item {
+            outline: none;
+            font-weight: 500;
+            width: 33%;
+            border: 1px solid $card-border;
+            border-radius: 10px;
+            background-color: #fff;
+            padding: 38px;
+            box-shadow: 5px 5px 10px rgba($color: #000000, $alpha: 0.03);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+
+            &:hover {
+                transform: translateY(-3px);
+                box-shadow: 5px 5px 10px rgba($color: #000000, $alpha: 0.1);
+                border-color: $primary;
+            }
+
+            &:active {
+                transform: scale(0.99);
+            }
+
+            &:focus {
+                box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.6);
+            }
+        }
+    }
+
+    .primary-btn {
+        align-self: center;
+    }
+}
+
+.footer {
+    &__text {
+        text-align: center;
+        color: $text-secondary;
+        font-size: 14px;
+
+        &-link {
+            text-decoration: underline;
+        }
+    }
+}
