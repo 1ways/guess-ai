@@ -1,5 +1,14 @@
+import { BrowserRouter, Routes, Route } from "react-router"
 import MainPage from "./pages/MainPage"
+import ChatPage from "./pages/ChatPage"
 
 export default function App() {
-    return <MainPage />
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<MainPage />} />
+                <Route path="/chat" element={<ChatPage />} />
+            </Routes>
+        </BrowserRouter>
+    )
 }

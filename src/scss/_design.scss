@@ -1,5 +1,7 @@
 @import "vars";
 
+// Global styles
+
 *,
 *::after,
 *::before {
@@ -26,14 +28,13 @@ a {
 
 .container {
     min-height: 100vh;
-    padding: 20px 15px;
+    padding: 10px 15px;
     margin: 0 auto;
     max-width: 1350px;
 
     &-main {
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
     }
 }
 
@@ -66,16 +67,36 @@ a {
     }
 }
 
+.loader {
+    text-align: center;
+    animation: appear 0.4s;
+
+    &__text {
+        display: inline-block;
+        background: linear-gradient(90deg, #000 0%, #000 40%, rgba(255, 255, 255, 0.3) 50%, #000 60%, #000 100%);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation:
+            appear 0.4s,
+            shimmer 2s linear infinite 0.4s;
+    }
+}
+
+// /Global styles
+
 .header {
     text-align: center;
+    margin-bottom: 150px;
 
     &__title {
         font-weight: 700;
-        font-size: 64px;
-        margin-bottom: 20px;
+        font-size: 52px;
+        margin-bottom: 10px;
     }
 
     &__subtitle {
+        font-size: 14px;
         color: $text-secondary;
     }
 }
@@ -83,6 +104,7 @@ a {
 .main {
     display: flex;
     flex-direction: column;
+    flex: 1;
 
     &__title {
         font-size: 24px;
@@ -93,12 +115,20 @@ a {
 
     &__cards {
         display: flex;
-        align-items: center;
         justify-content: space-between;
         gap: 10px;
         margin-bottom: 30px;
 
+        &-wrapper {
+            display: flex;
+            flex-direction: column;
+            animation: appear 0.4s;
+        }
+
         &-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             outline: none;
             font-weight: 500;
             width: 33%;
@@ -141,5 +171,24 @@ a {
         &-link {
             text-decoration: underline;
         }
+    }
+}
+
+// Animations
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes shimmer {
+    to {
+        background-position: -200% center;
     }
 }
