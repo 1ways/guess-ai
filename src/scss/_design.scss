@@ -10,6 +10,10 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: "Inter", sans-serif;
     background: $main-bg;
@@ -177,9 +181,79 @@ a {
 
     &__body {
         flex: 1;
+        display: flex;
+        flex-direction: column;
+
+        &-title {
+            animation: appear 0.4s;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+
+            span {
+                color: $primary;
+            }
+        }
+    }
+
+    &__messages {
+        padding-bottom: 100px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        position: relative;
+
+        &-title {
+            animation: appear 0.4s;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 400;
+            color: $text-secondary;
+        }
+
+        &-item {
+            animation: appear 0.4s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+
+            &--ai {
+                .chat__messages-box {
+                    color: $text;
+                    border: 1px solid $card-border;
+                }
+            }
+
+            &--user {
+                .chat__messages-sender {
+                    color: $user-bubble-bg;
+                }
+
+                .chat__messages-box {
+                    border: 1px solid $user-bubble-bg;
+                    color: $user-bubble-bg;
+                }
+            }
+        }
+
+        &-box {
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        &-sender {
+            font-size: 14px;
+            width: 30px;
+        }
     }
 
     &__footer {
+        width: 768px;
+        bottom: 40px;
+        position: fixed;
+        animation: appear 0.4s;
         display: flex;
         justify-content: space-between;
         border: 1px solid $card-border;
@@ -188,6 +262,8 @@ a {
         padding-right: 2px;
         font-size: 14px;
         transition: all 0.1s linear;
+        background: $main-bg;
+        z-index: 100;
 
         &:focus-within {
             box-shadow: 0 6px 12px rgba(37, 99, 235, 0.1);
@@ -227,6 +303,11 @@ a {
 }
 
 .footer {
+    width: 100%;
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
     &__text {
         text-align: center;
         color: $text-secondary;

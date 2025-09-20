@@ -28,7 +28,11 @@ export default function Cards() {
     }, [])
 
     function openChat(topic: string) {
-        navigate('chat')
+        navigate('chat', {
+            state: {
+                topic: topic
+            }
+        })
     }
 
     if (isLoading || topics.length === 0) {
