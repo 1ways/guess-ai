@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router'
 import arrowIcon from '../assets/arrow.svg'
 import Loader from '../components/Loader'
+import { askAI } from '../service/ai'
+import { getUserResponsePrompt, generateGuessObject } from '../prompts/gamePrompts'
 
 type Message = {
     sender: 'user' | 'ai',
@@ -13,14 +15,38 @@ export default function ChatPage() {
     // States
     const [message, setMessage] = useState('')
     const [messages, setMessages] = useState<Message[]>([])
+    const [isLoading, setIsLoading] = useState(false)
+    const [secret, setSecret] = useState('')
     const chatBottom = useRef<HTMLDivElement | null>(null)
+    const inputRef = useRef<HTMLInputElement | null>(null)
 
     const topic: string = location.state.topic
 
     function sendMessage(message: string) {
+        setIsLoading(true)
         setMessages(prevMessages => [...prevMessages, { sender: "user", text: message }])
         setMessage('')
+
+        const prompt = getUserResponsePrompt(topic, secret)
+
+        askAI(prompt + ` User's message: ${message}`)
+            .then(res => {
+                setMessages(prevMessages => [...prevMessages, { sender: "ai", text: res }])
+                setIsLoading(false)
+            })
+            .catch(err => console.log("Error:" + err))
     }
+
+    useEffect(() => {
+        setIsLoading(true)
+        // Generate a secret object
+        askAI(generateGuessObject(topic))
+            .then(res => {
+                setSecret(res)
+                setIsLoading(false)
+            })
+            .catch(err => console.log("Error:" + err))
+    }, [])
 
     useEffect(() => {
         function onKeyDown(e: KeyboardEvent) {
@@ -37,8 +63,9 @@ export default function ChatPage() {
     }, [message])
 
     useEffect(() => {
-        console.log(chatBottom.current?.scrollIntoView())
-    }, [messages])
+        chatBottom.current?.scrollIntoView()
+        inputRef.current?.focus()
+    }, [messages.length])
 
     return (
         <div className="container container-main">
@@ -76,20 +103,26 @@ export default function ChatPage() {
                         </div>
                     </div>
                     <div className="chat__footer">
-                        <input
-                            className="chat__footer-input"
-                            type="text"
-                            placeholder="Ask something..."
-                            value={message}
-                            onChange={(e) => setMessage(e.currentTarget.value)}
-                        />
-                        <button
-                            className={`chat__footer-btn primary-btn${message.trim() === "" ? " hidden" : ""}`}
-                            onClick={() => sendMessage(message)}
-                        >
-                            <img className="chat__footer-arrow" src={arrowIcon} alt="Send Icon" />
-                        </button>
-                        {/* <Loader text="Thinking" /> */}
+                        {isLoading ? (
+                            <Loader text="Thinking..." />
+                        ) : (
+                            <div className="chat__input-wrap">
+                                <input
+                                    className="chat__input"
+                                    type="text"
+                                    placeholder="Ask something..."
+                                    value={message}
+                                    onChange={(e) => setMessage(e.currentTarget.value)}
+                                    ref={inputRef}
+                                />
+                                <button
+                                    className={`chat__footer-btn primary-btn${message.trim() === "" ? " hidden" : ""}`}
+                                    onClick={() => sendMessage(message)}
+                                >
+                                    <img className="chat__footer-arrow" src={arrowIcon} alt="Send Icon" />
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
             </main>
