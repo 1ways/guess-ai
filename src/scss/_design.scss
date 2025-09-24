@@ -19,7 +19,7 @@ body {
     background: $main-bg;
     color: $text;
     line-height: 1.2;
-    min-height: 100vh;
+    max-height: 100vh;
 }
 
 ul {
@@ -31,7 +31,7 @@ a {
 }
 
 .container {
-    min-height: 100vh;
+    max-height: 100vh;
     padding: 10px 15px 50px;
     margin: 0 auto;
     max-width: 1350px;
@@ -345,6 +345,75 @@ a {
         &-link {
             text-decoration: underline;
         }
+    }
+}
+
+.modal {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(2px);
+    z-index: 1100000;
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+    transition: all 0.1s linear;
+    padding: 15px;
+
+    &.show {
+        opacity: 1;
+        pointer-events: all;
+        visibility: visible;
+    }
+
+    &.show > .modal__body {
+        opacity: 1;
+        pointer-events: all;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    &__body {
+        z-index: 10;
+        text-align: center;
+        background-color: #fff;
+        border: 1px solid $primary-border;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 5px 5px 10px rgba($color: #000000, $alpha: 0.03);
+        transition: all 0.2s linear;
+        opacity: 0;
+        pointer-events: none;
+        visibility: hidden;
+        transform: translateY(10px);
+        height: 300px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    &__title {
+        font-weight: 700;
+        font-size: 24px;
+        margin-bottom: 30px;
+
+        span {
+            color: $primary;
+        }
+    }
+
+    &__text {
+        margin-bottom: 30px;
+    }
+
+    button {
+        margin-top: auto;
     }
 }
 

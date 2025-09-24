@@ -4,6 +4,7 @@ import arrowIcon from '../assets/arrow.svg'
 import Loader from '../components/Loader'
 import { askAI } from '../service/ai'
 import { getUserResponsePrompt, generateGuessObject } from '../prompts/gamePrompts'
+import WinModal from '../components/WinModal'
 
 type Message = {
     sender: 'user' | 'ai',
@@ -17,22 +18,34 @@ export default function ChatPage() {
     const [messages, setMessages] = useState<Message[]>([])
     const [isLoading, setIsLoading] = useState(false)
     const [secret, setSecret] = useState('')
+    const [isUserGuessed, setIsUserGuessed] = useState(false)
     const chatBottom = useRef<HTMLDivElement | null>(null)
     const inputRef = useRef<HTMLInputElement | null>(null)
 
     const topic: string = location.state.topic
 
+    // Functions
     function sendMessage(message: string) {
         setIsLoading(true)
+        // Add user's message to the state
         setMessages(prevMessages => [...prevMessages, { sender: "user", text: message }])
         setMessage('')
 
         const prompt = getUserResponsePrompt(topic, secret)
 
+        // Make a request to the AI
         askAI(prompt + ` User's message: ${message}`)
             .then(res => {
-                setMessages(prevMessages => [...prevMessages, { sender: "ai", text: res }])
+                const { responseText, isGuessed } = JSON.parse(res)
+
+                // Update messages with the ai response
+                setMessages(prevMessages => [...prevMessages, { sender: "ai", text: responseText }])
                 setIsLoading(false)
+
+                // Change isUserGuessed if user guessed the secret
+                if (isGuessed) {
+                    setTimeout(() => setIsUserGuessed(true), 1000)
+                }
             })
             .catch(err => console.log("Error:" + err))
     }
@@ -49,6 +62,7 @@ export default function ChatPage() {
     }, [])
 
     useEffect(() => {
+        // Pressing the Enter key sends the message
         function onKeyDown(e: KeyboardEvent) {
             if (e.code === 'Enter' && message.trim() !== '') {
                 sendMessage(message)
@@ -63,6 +77,7 @@ export default function ChatPage() {
     }, [message])
 
     useEffect(() => {
+        // Scroll chat to the bottom everytime messages array gets updated
         chatBottom.current?.scrollIntoView()
         inputRef.current?.focus()
     }, [messages.length])
@@ -131,6 +146,7 @@ export default function ChatPage() {
                     Copyright 2025 © <a className="footer__text-link" href="https://www.linkedin.com/in/anton-hryshchuk-247b4637a" target="_blank">Anton Hryshchuk</a>
                 </p>
             </footer>
+            <WinModal open={isUserGuessed} secret={secret} />
         </div>
     )
 }
