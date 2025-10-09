@@ -1,4 +1,4 @@
-import type { Dispatch, MouseEvent, SetStateAction } from "react"
+import type { Dispatch, MouseEvent, SetStateAction, KeyboardEvent } from "react"
 
 type TopicsSelectorProps = {
     topics: string[],
@@ -9,7 +9,7 @@ type TopicsSelectorProps = {
 export default function TopicsSelector({ topics, setIsSelecting, setSelectedTopics }: TopicsSelectorProps) {
     const topicNames = ["Video Games", "Movies & TV Shows", "Music & Artists", "Books & Literature", "Superheroes & Villains", "History & Famous People", "Geography & Places", "Science & Inventions", "Animals & Nature", "Sports & Athletes"]
 
-    function handleClick(e: MouseEvent<HTMLLIElement>) {
+    function handleClick(e: MouseEvent<HTMLLIElement> | KeyboardEvent<HTMLLIElement>) {
         const value = e.currentTarget.textContent
 
         if (topics.includes(value)) {
@@ -31,8 +31,11 @@ export default function TopicsSelector({ topics, setIsSelecting, setSelectedTopi
                             className={`topics__list-item${isActive ? " active" : ""}`}
                             tabIndex={0}
                             onClick={handleClick}
+                            onKeyDown={e => e.key === "Enter" ? handleClick(e) : ''}
                             key={topic}
-                        >{topic}</li>
+                        >
+                            {topic}
+                        </li>
                     )
                 })}
             </ul>

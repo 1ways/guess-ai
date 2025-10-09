@@ -1,17 +1,26 @@
-export const generateTopicsPrompt = `
+export function getTopicsPrompt(topicsArr: string[]) {
+    return `
 Generate 3 simple and fun short ideas for the game "Guess the topic".
 
+User has selected favorite topics: ${topicsArr}.
+If this list is empty, use any popular and broad topics from various areas.
+
 Requirements:
-- Keep the topics broad and easy to understand for most people.
-- Avoid niche or overly specific topics (like currencies, minor characters, or obscure trivia).
-- Focus on popular and familiar areas: movies, cartoons, video games, music, history, animals.
-- Make sure the topics are diverse and not repeated.
-- Examples of good topics: "A Disney princess", "A Pokémon", "A superhero from Marvel", "An animal you can find in a zoo".
+- If favorite topics are provided, all generated ideas must strictly relate to those themes.
+- If no topics are selected, freely choose from common, well-known areas (e.g., movies, video games, music, history, animals, superheroes, cartoons).
+- Keep the topics broad, familiar, and easy to guess.
+- Avoid niche, obscure, or overly specific subjects (like rare characters, currencies, or minor historical figures).
+- Make sure all 3 topics are distinct and fun to play with.
+
+Examples of good topics:
+"A Disney princess", "A Pokémon", "A superhero from Marvel", "An animal from the jungle", "A famous musician".
 
 Output format:
 - Return only a valid JSON array of strings.
-- No code fences, no word "json", no explanations, no extra text.
+- Do not include code fences, the word "json", or any explanations.
+- Respond only with the JSON array.
 `
+}
 
 export function getUserResponsePrompt(topic: string, secret: string) {
     return `You are playing a game called "Guess something from the topic" with the user.  

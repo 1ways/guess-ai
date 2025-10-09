@@ -22,7 +22,7 @@ export default function MainPage() {
                 ) : (
                     <>
                         <h2 className="main__title">Try to guess...</h2>
-                        <Cards />
+                        <Cards selectedTopics={selectedTopics} />
                     </>
                 )}
             </main>

@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react"
 import Loader from "./Loader"
 import { askAI } from "../service/ai"
-import { generateTopicsPrompt } from "../prompts/gamePrompts"
+import { getTopicsPrompt } from "../prompts/gamePrompts"
 import { useNavigate } from "react-router"
 
-export default function Cards() {
+type CardsProps = {
+    selectedTopics: string[]
+}
+
+export default function Cards({ selectedTopics }: CardsProps) {
     // States
     const [isLoading, setIsLoading] = useState(false)
     const [topics, setTopics] = useState([])
@@ -15,7 +19,11 @@ export default function Cards() {
     function generateTopics() {
         setIsLoading(true)
 
-        askAI(generateTopicsPrompt)
+        const prompt = getTopicsPrompt(selectedTopics)
+
+        console.log(prompt)
+
+        askAI(prompt)
             .then(res => {
                 setTopics(JSON.parse(res))
                 setIsLoading(false)
