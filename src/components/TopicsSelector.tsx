@@ -12,6 +12,8 @@ export default function TopicsSelector({ topics, setIsSelecting, setSelectedTopi
     function handleClick(e: MouseEvent<HTMLLIElement> | KeyboardEvent<HTMLLIElement>) {
         const value = e.currentTarget.textContent
 
+        if (!value) return
+
         if (topics.includes(value)) {
             setSelectedTopics(prevValue => prevValue.filter(item => item != value))
         } else {
